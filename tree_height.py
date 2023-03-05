@@ -2,26 +2,21 @@
 
 import sys
 import threading
-import numpy
+import numpy as np
 
 
-def compute_height(n, parents):
-    # Write this function
-    max_height = 0
-    # Your code here
-    return max_height
+def compute_height(node, parents):
+    if node not in parents:
+        return 1
+    else:
+        locs = np.where(parents == node)[0]
+        return 1 + max(compute_height(i, parents) for i in locs)
 
 
 def main():
-    # implement input form keyboard and from files
-    
-    # let user input file name to use, don't allow file names with letter a
-    # account for github input inprecision
-    
-    # input number of elements
-    # input values in one variable, separate with space, split these values in an array
-    # call the function and output it's result
-    pass
+    parents = np.array(list(map(int, input().split())))
+    root = np.where(parents == -1)[0][0]
+    print(compute_height(root, parents))
 
 # In Python, the default limit on recursion depth is rather low,
 # so raise it here for this problem. Note that to take advantage
@@ -29,5 +24,5 @@ def main():
 sys.setrecursionlimit(10**7)  # max depth of recursion
 threading.stack_size(2**27)   # new thread will get stack of such size
 threading.Thread(target=main).start()
-main()
-# print(numpy.array([1,2,3]))
+
+threading.Event().wait()
