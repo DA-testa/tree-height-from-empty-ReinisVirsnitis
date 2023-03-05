@@ -28,7 +28,7 @@ def main():
             file_name = input()
             if 'a' in file_name:
                 raise ValueError
-            with open(f"test/{file_name}", 'r', encoding = 'ASCII') as file:
+            with open("test/{file_name}", 'r', encoding = "utf-8") as file:
                 node = int(file.readline())
                 parents = np.array(list(map(int, file.readline().split())))
         else:
