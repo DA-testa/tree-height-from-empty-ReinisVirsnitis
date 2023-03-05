@@ -30,7 +30,8 @@ def main():
                 raise ValueError
             with open("test/01", 'r', encoding = "utf-8") as file:
                 node = int(file.readline())
-                parents = np.array(list(map(int, file.readline().split())))
+                parents_str = file.readline().split()
+                parents = np.array([int(x) for x in parents_str if x != ''])
         else:
             raise ValueError
         
