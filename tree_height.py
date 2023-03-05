@@ -5,28 +5,31 @@ import threading
 import numpy as np
 
 
-def compute_height(parents):
-    max_height = 0
-    heights = [0] * len(parents)
-    for i in range(len(parents)):
-        current = i
-        height = 0
-        while current != -1:
-            if heights[current] != 0:
-                height += heights[current]
-                break
-            height += 1
-            current = parents[current]
-        heights[i] = height
-        max_height = max(max_height, height)
-    return max_height
+def compute_height(node, parents, heights):
+    if node not in parents:
+        return 1
+    elif heights[node] != -1:
+        return heights[node]
+    else:
+        locs = np.where(parents == node)[0]
+        heights[node] = 1 + max(compute_height(i, parents, heights)for i in locs)
+        return heights[node]
 
 
 
 
 def main():
-    parents = np.array(list(map(int, input().split())))
-    print(compute_height(parents))
+    file_name = input()
+    if 'a' in file_name:
+        raise ValueError
+    with open(f"folder/{file_name}", 'r') as file:
+        node = int(file.readline())
+        parents = np.array(list(map(int, file.readline().split())))
+
+    heights = np.full(node, -1)
+    root = np.where(parents == -1)[0][0]
+    print(compute_height(root, parents, heights))
+
 
 # In Python, the default limit on recursion depth is rather low,
 # so raise it here for this problem. Note that to take advantage
