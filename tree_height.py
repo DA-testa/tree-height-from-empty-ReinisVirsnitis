@@ -19,16 +19,39 @@ def compute_height(node, parents, heights):
 
 
 def main():
-    file_name = input()
-    if 'a' in file_name:
-        raise ValueError
-    with open(f"folder/{file_name}", 'r') as file:
-        node = int(file.readline())
-        parents = np.array(list(map(int, file.readline().split())))
+    try:
+        file_input = input()
+        if file_input == "I":
+            node = int(input())
+            parents = np.array(list(map(int, input().split())))
+        elif file_input == "F":
+            file_name = input()
+            if 'a' in file_name:
+                raise ValueError
+            with open(f"folder/{file_name}", 'r', encoding='utf-8') as file:
+                node = int(file.readline())
+                parents = np.array(list(map(int, file.readline().split())))
+        else:
+            raise ValueError
+        
+        heights = np.full(node, -1)
+        root = np.where(parents == -1)[0][0]
+        print(compute_height(root, parents, heights))
 
-    heights = np.full(node, -1)
-    root = np.where(parents == -1)[0][0]
-    print(compute_height(root, parents, heights))
+    except ValueError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+    except IOError as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+    
+
 
 
 # In Python, the default limit on recursion depth is rather low,
