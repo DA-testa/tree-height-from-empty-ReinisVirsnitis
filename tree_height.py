@@ -1,22 +1,32 @@
-# python3
+#python3
 
 import sys
 import threading
 import numpy as np
 
 
-def compute_height(node, parents):
-    if node not in parents:
-        return 1
-    else:
-        locs = np.where(parents == node)[0]
-        return 1 + max(compute_height(i, parents) for i in locs)
+def compute_height(parents):
+    max_height = 0
+    heights = [0] * len(parents)
+    for i in range(len(parents)):
+        current = i
+        height = 0
+        while current != -1:
+            if heights[current] != 0:
+                height += heights[current]
+                break
+            height += 1
+            current = parents[current]
+        heights[i] = height
+        max_height = max(max_height, height)
+    return max_height
+
+
 
 
 def main():
     parents = np.array(list(map(int, input().split())))
-    root = np.where(parents == -1)[0][0]
-    print(compute_height(root, parents))
+    print(compute_height(parents))
 
 # In Python, the default limit on recursion depth is rather low,
 # so raise it here for this problem. Note that to take advantage
